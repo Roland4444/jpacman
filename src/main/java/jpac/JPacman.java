@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 public class JPacman implements Serializable {
     public final String path ="install";
     public String rootInstall;
+    private String absPath;
     public JPacman(){
 
     };
@@ -34,7 +35,8 @@ public class JPacman implements Serializable {
     }
 
     public void install(String prefix, String file) throws IOException {
-        var Arr = Files.readAllBytes(new File(file).toPath());
+        System.out.println(prefix+file);
+        var Arr = Files.readAllBytes(new File(absPath).toPath());
         new File(returnPath(prefix+file)).mkdirs();
         System.out.println("Creates dirs..."+returnPath(prefix+file));
         var fos = new FileOutputStream(prefix+file);
@@ -48,13 +50,14 @@ public class JPacman implements Serializable {
         return abs.substring(abs.lastIndexOf(path)+path.length()+1);
     }
     public void install_abs(String input) throws IOException {
+        absPath=input;
         install(rootInstall, absToRel(input));
 
 
     }
 
     public static void run() throws IOException {
-        String root="~";
+        String root="/home/roland/";
      //   if (args[0]!=null)
       //      root = args[0];
         JPacman jpac = new JPacman(root);
@@ -63,9 +66,10 @@ public class JPacman implements Serializable {
             return;
         }
         Files.walk(Paths.get(jpac.path))
+                .filter(b->Files.isRegularFile(b))
                 .forEach(a-> {
                     try {
-                        jpac.install_abs(a.getFileName().toString());
+                        jpac.install_abs(a.toAbsolutePath().toString());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

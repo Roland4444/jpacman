@@ -38,7 +38,7 @@ class JPacmanTest {
                 .filter(p->Files.isRegularFile(p))
                 .forEach(a-> {
                     System.out.println("===>"+a.toAbsolutePath().toString());
-                    assertEquals("hello",jpac.absTorel(a.toAbsolutePath().toString()));
+                    assertEquals("hello",jpac.absToRel(a.toAbsolutePath().toString()));
                 });
     }
 

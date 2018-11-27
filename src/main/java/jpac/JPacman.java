@@ -43,28 +43,38 @@ public class JPacman implements Serializable {
         System.out.println("Writes file =>"+(prefix+file));
     }
 
-    public String absTorel(String abs){
+    public String absToRel(String abs){
         System.out.println(abs);
-        return abs.substring(abs.lastIndexOf(path)+path.length()+1, abs.length());
+        return abs.substring(abs.lastIndexOf(path)+path.length()+1);
     }
-    public void install_abs(String input){
-      //  install(rootInstall, input.substring());
+    public void install_abs(String input) throws IOException {
+        install(rootInstall, absToRel(input));
 
+
+    }
+
+    public static void run() throws IOException {
+        String root="~";
+     //   if (args[0]!=null)
+      //      root = args[0];
+        JPacman jpac = new JPacman(root);
+        if (!new File(jpac.path).exists()){
+            System.out.println("Nothing to do=>Install directory not exist");
+            return;
+        }
+        Files.walk(Paths.get(jpac.path))
+                .forEach(a-> {
+                    try {
+                        jpac.install_abs(a.getFileName().toString());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
 
     }
 
     public static void main(String[] args) throws IOException {
-       var root = args[0];
-       JPacman jpac = new JPacman(root);
-       if (new File(jpac.path).exists()){
-           System.out.println("Nothing to do=>Install directory not exist");
-           return;
-       }
-       Files.walk(Paths.get(jpac.path))
-               .forEach(a-> {
-                   jpac.install_abs(a.getFileName().toString());
-                });
-
+       JPacman.run();
 
     }
 }

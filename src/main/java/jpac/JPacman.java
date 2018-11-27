@@ -5,10 +5,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class JPacman implements Serializable {
+    public final String path ="install";
+    public String base;
+    public JPacman(){
 
-
+    };
+    public JPacman(String base){
+        this.base=base;
+    }
     public void extractRPM() throws IOException {
          Runtime.getRuntime().exec("ps -ef");
     }
@@ -35,10 +42,23 @@ public class JPacman implements Serializable {
         fos.close();
         System.out.println("Writes file =>"+(prefix+file));
     }
+    public void install_abs(String input){
 
-    public static void main(String[] args){
-        var base = args[0];
-        var where = args[1];
+
+    }
+
+    public static void main(String[] args) throws IOException {
+       var root = args[0];
+       JPacman jpac = new JPacman(root);
+       if (new File(jpac.path).exists()){
+           System.out.println("Nothing to do=>Install directory not exist");
+           return;
+       }
+       Files.walk(Paths.get(jpac.path))
+               .forEach(a-> {
+                   jpac.install_abs(a.getFileName().toString());
+                });
+
 
     }
 }

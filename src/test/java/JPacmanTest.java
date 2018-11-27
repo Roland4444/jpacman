@@ -3,7 +3,11 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class JPacmanTest {
     JPacman jpac = new JPacman();
@@ -27,6 +31,15 @@ class JPacmanTest {
         assertEquals(true, F2.exists());
         F2.delete();
 
+    }
+    @Test
+    void abstoRel() throws IOException {
+        Files.walk(Paths.get(jpac.path))
+                .filter(p->Files.isRegularFile(p))
+                .forEach(a-> {
+                    System.out.println("===>"+a.toAbsolutePath().toString());
+                    assertEquals("hello",jpac.absTorel(a.toAbsolutePath().toString()));
+                });
     }
 
     @Test

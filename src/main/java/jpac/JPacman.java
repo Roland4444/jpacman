@@ -9,12 +9,12 @@ import java.nio.file.Paths;
 
 public class JPacman implements Serializable {
     public final String path ="install";
-    public String base;
+    public String rootInstall;
     public JPacman(){
 
     };
     public JPacman(String base){
-        this.base=base;
+        this.rootInstall =base;
     }
     public void extractRPM() throws IOException {
          Runtime.getRuntime().exec("ps -ef");
@@ -42,7 +42,13 @@ public class JPacman implements Serializable {
         fos.close();
         System.out.println("Writes file =>"+(prefix+file));
     }
+
+    public String absTorel(String abs){
+        System.out.println(abs);
+        return abs.substring(abs.lastIndexOf(path)+path.length()+1, abs.length());
+    }
     public void install_abs(String input){
+      //  install(rootInstall, input.substring());
 
 
     }

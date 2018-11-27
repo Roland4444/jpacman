@@ -1,0 +1,59 @@
+# Maintainer: Roman Pastushkov <junglefromlondon@yandex.ru>
+pkgname=CRYPTOPROCSP
+pkgver=5.0
+pkgrel=1
+epoch=
+pkgdesc="All in one CRYPTOPRO CSP 5.0 package"
+arch=(x86_64)
+url=""
+license=('')
+groups=()
+depends=()
+makedepends=()
+checkdepends=()
+optdepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=()
+options=()
+install=
+changelog=
+source=(#"linux-amd64.tgz"
+      ) # "$pkgname-$pkgver.patch")
+noextract=()
+md5sums=()
+validpgpkeys=()
+
+prepare() {
+	echo "Extracting";	
+	cd ../
+	tar xf linux-amd64.tgz
+	cp extract.sh linux-amd64	
+	cd linux-amd64	
+	$PWD/extract.sh    
+
+	#cd "$pkgname-$pkgver"
+	#patch -p1 -i "$srcdir/$pkgname-$pkgver.patch"
+	echo "==>Extract complete "
+}
+
+build() {
+	echo $PWD
+	echo "NOTHING TO BUILD!"
+}
+
+check() {
+	echo $PWD
+	echo "NOTHING TO CHECK!"
+}
+
+package() {
+	echo "LEts package!"
+	cd ../
+	cp -R linux-amd64/* pkg
+	echo "Copying files..."	
+	echo "PKGDIR => $pkgdir"
+	make DESTDIR="$pkgdir/" install
+
+}

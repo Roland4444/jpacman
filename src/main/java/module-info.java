@@ -1,2 +1,2 @@
-open module jpac {
+open module eu.roland.jpac {
 }
